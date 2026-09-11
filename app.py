@@ -49,178 +49,123 @@ st.set_page_config(
     layout="wide"
 )
 
-# ============ 欢迎启动页 ============
-if 'entered' not in st.session_state:
-    st.session_state.entered = False
+import streamlit as st
 
-if not st.session_state.entered:
-    st.markdown("""
+# 1. 设置页面配置（必须放在第一行代码）
+st.set_page_config(
+    page_title="污泥减量化处理智能分析平台",
+    page_icon="💧",
+    layout="centered"
+)
+
+# 2. 注入自定义 CSS（实现深色背景、按钮居中和发光效果）
+st.markdown("""
     <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    section[data-testid="stSidebar"] {display: none;}
-    .block-container {
-        padding: 0 !important;
-        max-width: 100% !important;
-    }
+    /* 全局背景色 */
     .stApp {
-        background: linear-gradient(135deg, #0a1929 0%, #0d2137 40%, #1a3a5c 100%);
+        background-color: #0E1729; 
     }
-    .welcome-wrap {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding-top: 10vh;
-        padding-bottom: 1rem;
-    }
-    .welcome-tag {
-        font-size: 0.95rem;
-        color: #7fb3e0;
-        letter-spacing: 3px;
-        margin-bottom: 2rem;
-        font-weight: 400;
-        opacity: 0.9;
-    }
-    .welcome-title-main {
-        font-size: 3.0rem;
-        font-weight: 800;
-        color: #ffffff;
-        letter-spacing: 4px;
-        margin-bottom: 0.6rem;
-        text-shadow: 0 0 30px rgba(88, 166, 255, 0.4);
-        line-height: 1.3;
-    }
-    .welcome-title-blue {
-        font-size: 2.0rem;
-        font-weight: 700;
-        background: linear-gradient(90deg, #4facfe 0%, #58a6ff 50%, #7fd4ff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: 3px;
-        margin-bottom: 2rem;
-        line-height: 1.4;
-    }
-    .welcome-divider {
-        width: 60%;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #58a6ff, transparent);
-        margin: 1.5rem 0 2rem 0;
-        opacity: 0.6;
-    }
-    /* 信息卡片美化 */
-    .info-cards {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-        flex-wrap: wrap;
-        margin-bottom: 2.5rem;
-        padding: 0 2rem;
-    }
-    .info-card {
-        background: rgba(30, 80, 140, 0.25);
-        border: 1px solid rgba(88, 166, 255, 0.4);
-        border-radius: 10px;
-        padding: 0.8rem 1.6rem;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        min-width: 180px;
-    }
-    .info-card:hover {
-        border-color: rgba(88, 166, 255, 0.8);
-        box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3);
-        transform: translateY(-2px);
-    }
-    .info-card .info-label {
-        font-size: 0.75rem;
-        color: #7fb3e0;
-        letter-spacing: 2px;
-        margin-bottom: 0.3rem;
-        text-transform: uppercase;
-        opacity: 0.8;
-    }
-    .info-card .info-value {
-        font-size: 1.05rem;
-        color: #ffffff;
-        font-weight: 600;
-        letter-spacing: 1px;
-    }
-    /* 按钮居中 */
+    /* 强制居中所有的 stButton 容器 */
     div[data-testid="stButton"] {
         display: flex;
         justify-content: center;
-        width: 100%;
+        margin-top: 30px; /* 距离上方卡片的间距 */
+        margin-bottom: 30px;
     }
+    /* 美化“点击进入平台”按钮（还原你截图的发光效果） */
     div[data-testid="stButton"] > button {
-        background: linear-gradient(135deg, #1e6fd9 0%, #4facfe 100%) !important;
-        color: #ffffff !important;
-        font-size: 1.2rem !important;
-        font-weight: 700 !important;
-        letter-spacing: 3px !important;
-        padding: 1rem 4rem !important;
-        border: 2px solid rgba(127, 212, 255, 0.5) !important;
-        border-radius: 50px !important;
-        box-shadow: 0 0 30px rgba(79, 172, 254, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-        transition: all 0.3s ease !important;
-        min-width: 280px !important;
+        background: linear-gradient(90deg, #2563eb, #3b82f6);
+        color: white;
+        border: 1px solid #60a5fa;
+        border-radius: 30px; /* 圆角 */
+        padding: 12px 40px; /* 按钮大小 */
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); /* 发光 */
+        transition: all 0.3s ease;
     }
     div[data-testid="stButton"] > button:hover {
-        background: linear-gradient(135deg, #2a8fff 0%, #7fd4ff 100%) !important;
-        transform: translateY(-3px) scale(1.03) !important;
-        box-shadow: 0 0 45px rgba(127, 212, 255, 0.8), 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.9);
+        transform: scale(1.05);
+        color: white;
+        border-color: #93c5fd;
     }
-    .welcome-footer {
+    /* 卡片样式 */
+    .info-card {
+        background-color: #1A2A47;
+        border: 1px solid #2A3F65;
+        border-radius: 10px;
+        padding: 15px;
         text-align: center;
-        font-size: 0.8rem;
-        color: #4a7ba8;
-        letter-spacing: 2px;
-        margin-top: 3rem;
-        padding-bottom: 2rem;
+        color: #E2E8F0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+    }
+    .card-title {
+        font-size: 14px;
+        color: #94A3B8;
+        margin-bottom: 5px;
+    }
+    .card-content {
+        font-size: 18px;
+        font-weight: bold;
+        color: #FFFFFF;
     }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
+# 3. 顶部标题区
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: #94A3B8; font-weight: normal;'>第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</h4>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #FFFFFF; font-size: 42px;'>污泥减量化处理智能分析平台</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #60A5FA; font-weight: normal;'>基于机器学习的污泥减量化智能调控系统</h3>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+# 4. 四个信息卡片（使用 4 列布局）
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
     st.markdown("""
-    <div class="welcome-wrap">
-        <div class="welcome-tag">第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</div>
-        <div class="welcome-title-main">污泥减量化处理智能分析平台</div>
-        <div class="welcome-title-blue">基于机器学习的污泥减量化智能调控系统</div>
-        <div class="welcome-divider"></div>
-        <div class="info-cards">
-            <div class="info-card">
-                <div class="info-label">学校</div>
-                <div class="info-value">马鞍山学院</div>
-            </div>
-            <div class="info-card">
-                <div class="info-label">团队</div>
-                <div class="info-value">驰星队</div>
-            </div>
-            <div class="info-card">
-                <div class="info-label">指导老师</div>
-                <div class="info-value">李登、叶志成</div>
-            </div>
-            <div class="info-card">
-                <div class="info-label">团队负责人</div>
-                <div class="info-value">何嘉杰</div>
-            </div>
+        <div class="info-card">
+            <div class="card-title">学校</div>
+            <div class="card-content">马鞍山学院</div>
         </div>
-    </div>
     """, unsafe_allow_html=True)
 
-    # 用列来居中按钮
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        if st.button("🚀 点击进入平台", key="enter_platform"):
-            st.session_state.entered = True
-            st.rerun()
+with col2:
+    st.markdown("""
+        <div class="info-card">
+            <div class="card-title">团队</div>
+            <div class="card-content">驰星队</div>
+        </div>
+    """, unsafe_allow_html=True)
 
-    st.markdown('<div class="welcome-footer">© 2026 驰星队 · 马鞍山学院</div>', unsafe_allow_html=True)
-    st.stop()
-# ============ 欢迎启动页结束 ============
+with col3:
+    st.markdown("""
+        <div class="info-card">
+            <div class="card-title">指导老师</div>
+            <div class="card-content">李登、叶志成</div>
+        </div>
+    """, unsafe_allow_html=True)
 
+with col4:
+    st.markdown("""
+        <div class="info-card">
+            <div class="card-title">团队负责人</div>
+            <div class="card-content">何嘉杰</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+# 5. 居中的按钮（核心部分）
+st.markdown("<br>", unsafe_allow_html=True)
+# 这里直接写 st.button，由于我们在上方 CSS 写了 div[data-testid="stButton"] 的 flex 居中，它会自动跑到屏幕正中间
+if st.button("🚀 点击进入平台", use_container_width=False):
+    # 这里写点击按钮后进入主平台的逻辑
+    st.success("正在进入平台...")
+    # 比如： st.switch_page("pages/1_主页面.py")
+
+# 6. 底部版权信息
+st.markdown("<br><br><p style='text-align: center; color: #64748B; font-size: 14px;'>© 2026 驰星队 · 马鞍山学院</p>", unsafe_allow_html=True)
 # ============ 初始化session_state ============
 if 'df_loaded' not in st.session_state:
     st.session_state.df_loaded = None

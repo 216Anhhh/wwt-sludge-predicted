@@ -49,119 +49,146 @@ st.set_page_config(
     layout="wide"
 )
 
-import streamlit as st
+# ============ 欢迎启动页 ============
+if 'entered' not in st.session_state:
+    st.session_state.entered = False
 
-# 1. 页面基础配置
-st.set_page_config(
-    page_title="污泥减量化处理智能分析平台",
-    page_icon="💧",
-    layout="wide"
-)
-
-# 2. 初始化状态（关键！第一次打开默认是欢迎页）
-if "page" not in st.session_state:
-    st.session_state.page = "welcome"
-
-# ==================== 页面 1：欢迎页 ====================
-def show_welcome():
-    # 欢迎页专属的 CSS（居中和发光，不污染主界面）
+if not st.session_state.entered:
     st.markdown("""
-        <style>
-        .stApp { background-color: #0E1729; }
-        div[data-testid="stButton"] { display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px; }
-        div[data-testid="stButton"] > button {
-            background: linear-gradient(90deg, #2563eb, #3b82f6);
-            color: white; border: 1px solid #60a5fa; border-radius: 30px;
-            padding: 12px 40px; font-size: 18px; font-weight: bold;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); transition: all 0.3s ease;
-        }
-        div[data-testid="stButton"] > button:hover {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.9); transform: scale(1.05);
-            color: white; border-color: #93c5fd;
-        }
-        .info-card { background-color: #1A2A47; border: 1px solid #2A3F65; border-radius: 10px; padding: 15px; text-align: center; color: #E2E8F0; margin-bottom: 20px; }
-        .card-title { font-size: 14px; color: #94A3B8; margin-bottom: 5px; }
-        .card-content { font-size: 18px; font-weight: bold; color: #FFFFFF; }
-        </style>
+    <style>
+    /* 隐藏 Streamlit 默认元素 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    section[data-testid="stSidebar"] {display: none;}
+    .block-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+    /* 全屏背景 */
+    .stApp {
+        background: linear-gradient(135deg, #0a1929 0%, #0d2137 40%, #1a3a5c 100%);
+    }
+    /* 内容容器：不再占满整屏，而是用内边距控制位置 */
+    .welcome-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 12vh;
+        padding-bottom: 1rem;
+    }
+    /* 顶部小标签 */
+    .welcome-tag {
+        font-size: 0.95rem;
+        color: #7fb3e0;
+        letter-spacing: 3px;
+        margin-bottom: 2rem;
+        font-weight: 400;
+        opacity: 0.9;
+    }
+    /* 大标题 */
+    .welcome-title-main {
+        font-size: 3.0rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 4px;
+        margin-bottom: 0.6rem;
+        text-shadow: 0 0 30px rgba(88, 166, 255, 0.4);
+        line-height: 1.3;
+    }
+    /* 蓝色渐变大标题 */
+    .welcome-title-blue {
+        font-size: 2.0rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, #4facfe 0%, #58a6ff 50%, #7fd4ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 3px;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+    }
+    /* 分隔线 */
+    .welcome-divider {
+        width: 60%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #58a6ff, transparent);
+        margin: 1.5rem 0 2rem 0;
+        opacity: 0.6;
+    }
+    /* 信息栏 */
+    .welcome-info {
+        font-size: 1rem;
+        color: #b8d4f0;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        line-height: 2;
+    }
+    .welcome-info .sep {
+        color: #4a7ba8;
+        margin: 0 12px;
+    }
+    /* 按钮美化：注意选择器改为 data-testid */
+    div[data-testid="stButton"] > button {
+        background: linear-gradient(135deg, #1e6fd9 0%, #4facfe 100%) !important;
+        color: #ffffff !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 3px !important;
+        padding: 1rem 4rem !important;
+        border: 2px solid rgba(127, 212, 255, 0.5) !important;
+        border-radius: 50px !important;
+        box-shadow: 0 0 30px rgba(79, 172, 254, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        transition: all 0.3s ease !important;
+        width: auto !important;
+        margin-top: 1rem !important;
+    }
+    div[data-testid="stButton"] > button:hover {
+        background: linear-gradient(135deg, #2a8fff 0%, #7fd4ff 100%) !important;
+        transform: translateY(-3px) scale(1.03) !important;
+        box-shadow: 0 0 45px rgba(127, 212, 255, 0.8), 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    }
+    /* 底部小字 */
+    .welcome-footer {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #4a7ba8;
+        letter-spacing: 2px;
+        margin-top: 4rem;
+        padding-bottom: 2rem;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<h4 style='text-align: center; color: #94A3B8; font-weight: normal;'>第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</h4>", unsafe_allow_html=True)
-    st.markdown("<h1 style='text-align: center; color: #FFFFFF; font-size: 42px;'>污泥减量化处理智能分析平台</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #60A5FA; font-weight: normal;'>基于机器学习的污泥减量化智能调控系统</h3>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="welcome-wrap">
+        <div class="welcome-tag">第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</div>
+        <div class="welcome-title-main">污泥减量化处理智能分析平台</div>
+        <div class="welcome-title-blue">基于机器学习的污泥减量化智能调控系统</div>
+        <div class="welcome-divider"></div>
+        <div class="welcome-info">
+            <span>学校：马鞍山学院</span>
+            <span class="sep">|</span>
+            <span>团队：驰星队</span>
+            <br>
+            <span>指导老师：李登、叶志成</span>
+            <span class="sep">|</span>
+            <span>团队负责人：何嘉杰</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("<div class='info-card'><div class='card-title'>学校</div><div class='card-content'>马鞍山学院</div></div>", unsafe_allow_html=True)
+    # 居中按钮
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        st.markdown("<div class='info-card'><div class='card-title'>团队</div><div class='card-content'>驰星队</div></div>", unsafe_allow_html=True)
-    with col3:
-        st.markdown("<div class='info-card'><div class='card-title'>指导老师</div><div class='card-content'>李登、叶志成</div></div>", unsafe_allow_html=True)
-    with col4:
-        st.markdown("<div class='info-card'><div class='card-title'>团队负责人</div><div class='card-content'>何嘉杰</div></div>", unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # 这里只渲染欢迎页的按钮。点击后切换到主界面
-    if st.button("🚀 点击进入平台", use_container_width=False):
-        st.session_state.page = "main"
-        st.rerun() # 强制刷新，彻底清除欢迎页残留
-
-    st.markdown("<br><br><p style='text-align: center; color: #64748B; font-size: 14px;'>© 2026 驰星队 · 马鞍山学院</p>", unsafe_allow_html=True)
-
-
-# ==================== 页面 2：主界面 ====================
-def show_main():
-    # 侧边栏
-    with st.sidebar:
-        st.header("进水参数输入")
-        # 注意：这里加上了 value= 和 step= 避免反复输入
-        st.number_input("进水流量", value=289262.97)
-        st.number_input("进水BOD5", value=164.02)
-        st.number_input("进水CODcr", value=328.99)
-        st.number_input("进水SS", value=162.07)
-        st.number_input("进水NH3-N", value=29.42)
-        st.number_input("进水TP", value=5.01)
-        st.number_input("进水TN", value=38.79)
-        st.number_input("进水水温", value=18.68)
-        
-        st.markdown("---")
-        # 给你加一个返回首页的按钮，方便你来回测试
-        if st.button("⬅️ 返回首页"):
-            st.session_state.page = "welcome"
+        if st.button("🚀 点 击 进 入 平 台", key="enter_platform", use_container_width=True):
+            st.session_state.entered = True
             st.rerun()
 
-    # 主内容区
-    st.markdown("<h2 style='text-align: center; color: #3B82F6;'>💧 污水处理智能分析平台</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #64748B;'>基于进水参数的污泥指标预测与SRT优化系统</p>", unsafe_allow_html=True)
-    st.divider()
-
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        st.info("等待预测...\n\n点击“开始预测”")
-    with c2:
-        st.info("等待预测...\n\n点击“开始预测”")
-    with c3:
-        st.info("等待预测...\n\n点击“开始预测”")
-    with c4:
-        st.info("等待预测...\n\n点击“开始预测”")
-
-    # 标签页
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 预测分析", "⏳ 时间序列", "📈 特征重要性", "🤖 模型评价", "🔍 SHAP解释"])
-    with tab1:
-        st.info("💡 请先在左侧侧边栏输入参数，然后点击“开始预测”按钮")
-    # 其他标签页你可以自己补充...
-
-    st.markdown("---")
-    st.markdown("<p style='text-align: center; color: #64748B;'>💧 污水处理智能分析平台 v6.0 | 完整功能版 | 🌙 暗色模式</p>", unsafe_allow_html=True)
-
-# ==================== 页面 3：路由控制（至关重要） ====================
-# 根据状态决定只渲染哪一个页面，不相关的代码绝对不跑！
-if st.session_state.page == "welcome":
-    show_welcome()
-else:
-    show_main()
+    st.markdown('<div class="welcome-footer">© 2026 驰星队 · 马鞍山学院</div>', unsafe_allow_html=True)
+    st.stop()
+# ============ 欢迎启动页结束 ============
 
 # ============ 初始化session_state ============
 if 'df_loaded' not in st.session_state:

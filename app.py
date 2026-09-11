@@ -51,121 +51,29 @@ st.set_page_config(
 
 import streamlit as st
 
-# 1. 设置页面配置（必须放在第一行代码）
-st.set_page_config(
-    page_title="污泥减量化处理智能分析平台",
-    page_icon="💧",
-    layout="centered"
-)
+if "page" not in st.session_state:
+    st.session_state.page = "welcome"
 
-# 2. 注入自定义 CSS（实现深色背景、按钮居中和发光效果）
-st.markdown("""
-    <style>
-    /* 全局背景色 */
-    .stApp {
-        background-color: #0E1729; 
-    }
-    /* 强制居中所有的 stButton 容器 */
-    div[data-testid="stButton"] {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px; /* 距离上方卡片的间距 */
-        margin-bottom: 30px;
-    }
-    /* 美化“点击进入平台”按钮（还原你截图的发光效果） */
-    div[data-testid="stButton"] > button {
-        background: linear-gradient(90deg, #2563eb, #3b82f6);
-        color: white;
-        border: 1px solid #60a5fa;
-        border-radius: 30px; /* 圆角 */
-        padding: 12px 40px; /* 按钮大小 */
-        font-size: 18px;
-        font-weight: bold;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); /* 发光 */
-        transition: all 0.3s ease;
-    }
-    div[data-testid="stButton"] > button:hover {
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.9);
-        transform: scale(1.05);
-        color: white;
-        border-color: #93c5fd;
-    }
-    /* 卡片样式 */
-    .info-card {
-        background-color: #1A2A47;
-        border: 1px solid #2A3F65;
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        color: #E2E8F0;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        margin-bottom: 20px;
-    }
-    .card-title {
-        font-size: 14px;
-        color: #94A3B8;
-        margin-bottom: 5px;
-    }
-    .card-content {
-        font-size: 18px;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-    </style>
-""", unsafe_allow_html=True)
+def show_welcome():
+    # 包含标题、卡片、按钮等欢迎界面的代码
+    if st.button("点击进入平台"):
+        st.session_state.page = "main"
+        st.rerun()
 
-# 3. 顶部标题区
-st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align: center; color: #94A3B8; font-weight: normal;'>第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</h4>", unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; color: #FFFFFF; font-size: 42px;'>污泥减量化处理智能分析平台</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: #60A5FA; font-weight: normal;'>基于机器学习的污泥减量化智能调控系统</h3>", unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True)
+def show_main():
+    # 包含侧边栏、主界面逻辑等代码
+    st.sidebar.title("进水参数输入")
+    # ... 其他代码
+    # 加一个返回按钮
+    if st.sidebar.button("返回首页"):
+        st.session_state.page = "welcome"
+        st.rerun()
 
-# 4. 四个信息卡片（使用 4 列布局）
-col1, col2, col3, col4 = st.columns(4)
+if st.session_state.page == "welcome":
+    show_welcome()
+else:
+    show_main()
 
-with col1:
-    st.markdown("""
-        <div class="info-card">
-            <div class="card-title">学校</div>
-            <div class="card-content">马鞍山学院</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown("""
-        <div class="info-card">
-            <div class="card-title">团队</div>
-            <div class="card-content">驰星队</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-with col3:
-    st.markdown("""
-        <div class="info-card">
-            <div class="card-title">指导老师</div>
-            <div class="card-content">李登、叶志成</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-with col4:
-    st.markdown("""
-        <div class="info-card">
-            <div class="card-title">团队负责人</div>
-            <div class="card-content">何嘉杰</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-# 5. 居中的按钮（核心部分）
-st.markdown("<br>", unsafe_allow_html=True)
-# 这里直接写 st.button，由于我们在上方 CSS 写了 div[data-testid="stButton"] 的 flex 居中，它会自动跑到屏幕正中间
-if st.button("🚀 点击进入平台", use_container_width=False):
-    # 这里写点击按钮后进入主平台的逻辑
-    st.success("正在进入平台...")
-    # 比如： st.switch_page("pages/1_主页面.py")
-
-# 6. 底部版权信息
-st.markdown("<br><br><p style='text-align: center; color: #64748B; font-size: 14px;'>© 2026 驰星队 · 马鞍山学院</p>", unsafe_allow_html=True)
 # ============ 初始化session_state ============
 if 'df_loaded' not in st.session_state:
     st.session_state.df_loaded = None

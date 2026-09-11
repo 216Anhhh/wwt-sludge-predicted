@@ -56,7 +56,6 @@ if 'entered' not in st.session_state:
 if not st.session_state.entered:
     st.markdown("""
     <style>
-    /* 隐藏 Streamlit 默认元素 */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
@@ -65,20 +64,17 @@ if not st.session_state.entered:
         padding: 0 !important;
         max-width: 100% !important;
     }
-    /* 全屏背景 */
     .stApp {
         background: linear-gradient(135deg, #0a1929 0%, #0d2137 40%, #1a3a5c 100%);
     }
-    /* 内容容器：不再占满整屏，而是用内边距控制位置 */
     .welcome-wrap {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding-top: 12vh;
+        padding-top: 10vh;
         padding-bottom: 1rem;
     }
-    /* 顶部小标签 */
     .welcome-tag {
         font-size: 0.95rem;
         color: #7fb3e0;
@@ -87,7 +83,6 @@ if not st.session_state.entered:
         font-weight: 400;
         opacity: 0.9;
     }
-    /* 大标题 */
     .welcome-title-main {
         font-size: 3.0rem;
         font-weight: 800;
@@ -97,7 +92,6 @@ if not st.session_state.entered:
         text-shadow: 0 0 30px rgba(88, 166, 255, 0.4);
         line-height: 1.3;
     }
-    /* 蓝色渐变大标题 */
     .welcome-title-blue {
         font-size: 2.0rem;
         font-weight: 700;
@@ -109,7 +103,6 @@ if not st.session_state.entered:
         margin-bottom: 2rem;
         line-height: 1.4;
     }
-    /* 分隔线 */
     .welcome-divider {
         width: 60%;
         height: 1px;
@@ -117,19 +110,50 @@ if not st.session_state.entered:
         margin: 1.5rem 0 2rem 0;
         opacity: 0.6;
     }
-    /* 信息栏 */
-    .welcome-info {
-        font-size: 1rem;
-        color: #b8d4f0;
+    /* 信息卡片美化 */
+    .info-cards {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        padding: 0 2rem;
+    }
+    .info-card {
+        background: rgba(30, 80, 140, 0.25);
+        border: 1px solid rgba(88, 166, 255, 0.4);
+        border-radius: 10px;
+        padding: 0.8rem 1.6rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        min-width: 180px;
+    }
+    .info-card:hover {
+        border-color: rgba(88, 166, 255, 0.8);
+        box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3);
+        transform: translateY(-2px);
+    }
+    .info-card .info-label {
+        font-size: 0.75rem;
+        color: #7fb3e0;
         letter-spacing: 2px;
-        margin-bottom: 1rem;
-        line-height: 2;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        opacity: 0.8;
     }
-    .welcome-info .sep {
-        color: #4a7ba8;
-        margin: 0 12px;
+    .info-card .info-value {
+        font-size: 1.05rem;
+        color: #ffffff;
+        font-weight: 600;
+        letter-spacing: 1px;
     }
-    /* 按钮美化：注意选择器改为 data-testid */
+    /* 按钮居中 */
+    div[data-testid="stButton"] {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
     div[data-testid="stButton"] > button {
         background: linear-gradient(135deg, #1e6fd9 0%, #4facfe 100%) !important;
         color: #ffffff !important;
@@ -141,21 +165,19 @@ if not st.session_state.entered:
         border-radius: 50px !important;
         box-shadow: 0 0 30px rgba(79, 172, 254, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         transition: all 0.3s ease !important;
-        width: auto !important;
-        margin-top: 1rem !important;
+        min-width: 280px !important;
     }
     div[data-testid="stButton"] > button:hover {
         background: linear-gradient(135deg, #2a8fff 0%, #7fd4ff 100%) !important;
         transform: translateY(-3px) scale(1.03) !important;
         box-shadow: 0 0 45px rgba(127, 212, 255, 0.8), 0 8px 30px rgba(0, 0, 0, 0.4) !important;
     }
-    /* 底部小字 */
     .welcome-footer {
         text-align: center;
         font-size: 0.8rem;
         color: #4a7ba8;
         letter-spacing: 2px;
-        margin-top: 4rem;
+        margin-top: 3rem;
         padding-bottom: 2rem;
     }
     </style>
@@ -167,22 +189,31 @@ if not st.session_state.entered:
         <div class="welcome-title-main">污泥减量化处理智能分析平台</div>
         <div class="welcome-title-blue">基于机器学习的污泥减量化智能调控系统</div>
         <div class="welcome-divider"></div>
-        <div class="welcome-info">
-            <span>学校：马鞍山学院</span>
-            <span class="sep">|</span>
-            <span>团队：驰星队</span>
-            <br>
-            <span>指导老师：李登、叶志成</span>
-            <span class="sep">|</span>
-            <span>团队负责人：何嘉杰</span>
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-label">学校</div>
+                <div class="info-value">马鞍山学院</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">团队</div>
+                <div class="info-value">驰星队</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">指导老师</div>
+                <div class="info-value">李登、叶志成</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">团队负责人</div>
+                <div class="info-value">何嘉杰</div>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # 居中按钮
+    # 用列来居中按钮
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        if st.button("🚀 点 击 进 入 平 台", key="enter_platform", use_container_width=True):
+        if st.button("🚀 点击进入平台", key="enter_platform"):
             st.session_state.entered = True
             st.rerun()
 

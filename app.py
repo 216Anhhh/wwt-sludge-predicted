@@ -49,6 +49,150 @@ st.set_page_config(
     layout="wide"
 )
 
+# ============ 欢迎启动页 ============
+if 'entered' not in st.session_state:
+    st.session_state.entered = False
+
+if not st.session_state.entered:
+    st.markdown("""
+    <style>
+    /* 隐藏 Streamlit 默认元素 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    section[data-testid="stSidebar"] {display: none;}
+    .block-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+    /* 全屏背景 */
+    .stApp {
+        background: linear-gradient(135deg, #0a1929 0%, #0d2137 40%, #1a3a5c 100%);
+    }
+    /* 内容容器 */
+    .welcome-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        text-align: center;
+    }
+    /* 顶部小标签 */
+    .welcome-tag {
+        font-size: 0.95rem;
+        color: #7fb3e0;
+        letter-spacing: 3px;
+        margin-bottom: 2rem;
+        font-weight: 400;
+        opacity: 0.9;
+    }
+    /* 大标题 */
+    .welcome-title-main {
+        font-size: 3.0rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 4px;
+        margin-bottom: 0.6rem;
+        text-shadow: 0 0 30px rgba(88, 166, 255, 0.4);
+        line-height: 1.3;
+    }
+    /* 蓝色渐变大标题 */
+    .welcome-title-blue {
+        font-size: 2.0rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, #4facfe 0%, #58a6ff 50%, #7fd4ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 3px;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+    }
+    /* 分隔线 */
+    .welcome-divider {
+        width: 60%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #58a6ff, transparent);
+        margin: 1.5rem 0 2rem 0;
+        opacity: 0.6;
+    }
+    /* 信息栏 */
+    .welcome-info {
+        font-size: 1rem;
+        color: #b8d4f0;
+        letter-spacing: 2px;
+        margin-bottom: 3rem;
+        line-height: 2;
+    }
+    .welcome-info .sep {
+        color: #4a7ba8;
+        margin: 0 12px;
+    }
+    /* 按钮容器 */
+    .enter-btn-wrap {
+        margin-top: 1rem;
+    }
+    /* 按钮美化 */
+    div.stButton > button {
+        background: linear-gradient(135deg, #1e6fd9 0%, #4facfe 100%) !important;
+        color: #ffffff !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 3px !important;
+        padding: 1rem 4rem !important;
+        border: 2px solid rgba(127, 212, 255, 0.5) !important;
+        border-radius: 50px !important;
+        box-shadow: 0 0 30px rgba(79, 172, 254, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        transition: all 0.3s ease !important;
+        width: auto !important;
+    }
+    div.stButton > button:hover {
+        background: linear-gradient(135deg, #2a8fff 0%, #7fd4ff 100%) !important;
+        transform: translateY(-3px) scale(1.03) !important;
+        box-shadow: 0 0 45px rgba(127, 212, 255, 0.8), 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    }
+    /* 底部小字 */
+    .welcome-footer {
+        position: fixed;
+        bottom: 2rem;
+        font-size: 0.8rem;
+        color: #4a7ba8;
+        letter-spacing: 2px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="welcome-wrap">
+        <div class="welcome-tag">第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</div>
+        <div class="welcome-title-main">污泥减量处理智能分析平台</div>
+        <div class="welcome-title-blue">基于机器学习的污泥减量化智能调控系统</div>
+        <div class="welcome-divider"></div>
+        <div class="welcome-info">
+            <span>学校：马鞍山学院</span>
+            <span class="sep">|</span>
+            <span>团队：驰星队</span>
+            <br>
+            <span>指导老师：李登、叶志成</span>
+            <span class="sep">|</span>
+            <span>团队负责人：何嘉杰</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 居中按钮
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("🚀 点 击 进 入 平 台", key="enter_platform", use_container_width=True):
+            st.session_state.entered = True
+            st.rerun()
+
+    st.markdown('<div class="welcome-footer">© 2026 驰星队 · 马鞍山学院</div>', unsafe_allow_html=True)
+    st.stop()
+# ============ 欢迎启动页结束 ============
+
 # ============ 初始化session_state ============
 if 'df_loaded' not in st.session_state:
     st.session_state.df_loaded = None

@@ -69,15 +69,14 @@ if not st.session_state.entered:
     .stApp {
         background: linear-gradient(135deg, #0a1929 0%, #0d2137 40%, #1a3a5c 100%);
     }
-    /* 内容容器 */
+    /* 内容容器：不再占满整屏，而是用内边距控制位置 */
     .welcome-wrap {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        min-height: 100vh;
-        padding: 2rem;
         text-align: center;
+        padding-top: 12vh;
+        padding-bottom: 1rem;
     }
     /* 顶部小标签 */
     .welcome-tag {
@@ -123,19 +122,15 @@ if not st.session_state.entered:
         font-size: 1rem;
         color: #b8d4f0;
         letter-spacing: 2px;
-        margin-bottom: 3rem;
+        margin-bottom: 1rem;
         line-height: 2;
     }
     .welcome-info .sep {
         color: #4a7ba8;
         margin: 0 12px;
     }
-    /* 按钮容器 */
-    .enter-btn-wrap {
-        margin-top: 1rem;
-    }
-    /* 按钮美化 */
-    div.stButton > button {
+    /* 按钮美化：注意选择器改为 data-testid */
+    div[data-testid="stButton"] > button {
         background: linear-gradient(135deg, #1e6fd9 0%, #4facfe 100%) !important;
         color: #ffffff !important;
         font-size: 1.2rem !important;
@@ -147,19 +142,21 @@ if not st.session_state.entered:
         box-shadow: 0 0 30px rgba(79, 172, 254, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         transition: all 0.3s ease !important;
         width: auto !important;
+        margin-top: 1rem !important;
     }
-    div.stButton > button:hover {
+    div[data-testid="stButton"] > button:hover {
         background: linear-gradient(135deg, #2a8fff 0%, #7fd4ff 100%) !important;
         transform: translateY(-3px) scale(1.03) !important;
         box-shadow: 0 0 45px rgba(127, 212, 255, 0.8), 0 8px 30px rgba(0, 0, 0, 0.4) !important;
     }
     /* 底部小字 */
     .welcome-footer {
-        position: fixed;
-        bottom: 2rem;
+        text-align: center;
         font-size: 0.8rem;
         color: #4a7ba8;
         letter-spacing: 2px;
+        margin-top: 4rem;
+        padding-bottom: 2rem;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -167,7 +164,7 @@ if not st.session_state.entered:
     st.markdown("""
     <div class="welcome-wrap">
         <div class="welcome-tag">第八届全国大学生市政环境AI+创新实践能力大赛 · 产业赛道</div>
-        <div class="welcome-title-main">污泥减量处理智能分析平台</div>
+        <div class="welcome-title-main">污泥减量化处理智能分析平台</div>
         <div class="welcome-title-blue">基于机器学习的污泥减量化智能调控系统</div>
         <div class="welcome-divider"></div>
         <div class="welcome-info">

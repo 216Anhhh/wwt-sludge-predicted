@@ -210,25 +210,12 @@ if not st.session_state.entered:
     </div>
     """, unsafe_allow_html=True)
 
-import streamlit as st
-
-# 1. 注入 CSS：强行让所有按钮居中（放在你需要渲染按钮的地方）
-st.markdown("""
-    <style>
-    /* 找到 Streamlit 的按钮容器，强制让它变成弹性盒并水平居中 */
-    div[data-testid="stButton"] {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 2. 直接写按钮，什么都不用套
-if st.button("🚀 点击进入平台", key="enter_platform"):
-    st.session_state.entered = True
-    st.rerun()
-
+    # 用列来居中按钮
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("🚀 点击进入平台", key="enter_platform"):
+            st.session_state.entered = True
+            st.rerun()
 
     st.markdown('<div class="welcome-footer">© 2026 驰星队 · 马鞍山学院</div>', unsafe_allow_html=True)
     st.stop()
